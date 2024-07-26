@@ -15,7 +15,7 @@ public class TickTackToeServer extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
 
         Scene scene = new Scene(root);
- 
+        
         stage.setScene(scene);
        Server s = new Server();
         stage.show();
