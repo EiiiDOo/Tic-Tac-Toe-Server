@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +15,8 @@ public class ClientHandler extends Thread {
 
     DataInputStream dis;
     PrintStream ps;
-
+ 
+    public LinkedBlockingQueue<String> queryQueue = new LinkedBlockingQueue<>();
 
     ClientHandler(Socket cs) {
   
@@ -28,23 +31,43 @@ public class ClientHandler extends Thread {
 
     public void run() {
         while (true) {
-            String query = "";
+            
+            String recievedQuery = null;
+            String sendQuery = null;
             try {
-                query = dis.readLine();
-            } catch (IOException ex) {
+                //
+                if (dis.available() > 0) {
+              
+                recievedQuery = dis.readLine();
+                recievedQueryHandler(recievedQuery);
+              
+                
+                }
+                // send 
+               sendQuery = queryQueue.poll(2, TimeUnit.SECONDS);
+               if(sendQuery !=null){
+                   
+               querySender(sendQuery);
+               
+               }
+               
+                TimeUnit.SECONDS.sleep(2);
+
+            } catch (Exception ex) {
              System.out.print("cant read from stream");     
             }
-            queryHandler(query);
         }
     }
 
-    void queryHandler(String msg) {
-        
-        
-        
-        
+    void querySender(String msg) {
+    
       
     }
+    void recievedQueryHandler(String query){
+       
+
+    }
+    
 }
 
 
