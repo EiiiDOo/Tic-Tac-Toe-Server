@@ -14,56 +14,78 @@ import org.apache.derby.jdbc.ClientDriver;
 
 public class DataAccessObject {
 
-    static Connection connection;
-
-    static {
-        try {
-            DriverManager.registerDriver(new ClientDriver());
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     public static String getPlayerData(String username) throws SQLException {
-        String player=null;
+        DriverManager.registerDriver(new ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String player = null;
         String queryString = new String("SELECT * FROM PLAYERS WHERE USERNAME = '" + username + "';");
         PreparedStatement pst = connection.prepareStatement(queryString);
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
-              player=username + ",";
+            player = username + ",";
             player += rs.getString("FIRSTNAEM") + ",";
             player += rs.getString("LASTNAME") + ",";
             player += rs.getString("MALE") + ",";
             player += rs.getString("SCORE");
-        } 
+        }
         pst.close();
         return player;
     }
-     public static ArrayList<String> getAvailablePlayers() throws SQLException {
-        ArrayList<String> players = new ArrayList<>();
+
+    public static String getAvailablePlayers() throws SQLException {
+        DriverManager.registerDriver(new ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String players = "";
         String queryString = new String("SELECT * FROM PLAYERS WHERE AVAILABLE = true;");
         PreparedStatement pst = connection.prepareStatement(queryString);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
-              players.add(rs.getString("USERNAME"));
-        } 
+            players+=rs.getString("USERNAME")+",";
+        }
         pst.close();
+        connection.close();
         return players;
     }
-     public static ArrayList<String> getHistory(String username) throws SQLException {
-        ArrayList<String> playerGamesHistroy = new ArrayList<>();
-        String queryString = new String("SELECT * FROM PLAYERS WHERE USERNAME = '" + username + "';");
+    public static String getLoggedOffPlayers() throws SQLException {
+        DriverManager.registerDriver(new ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String players = "";
+        String queryString = new String("SELECT * FROM PLAYERS WHERE LOGGEDOFF = true;");
         PreparedStatement pst = connection.prepareStatement(queryString);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
-              playerGamesHistroy.add(rs.getString("GAMEINFO"));
-        } 
+            players+=rs.getString("USERNAME")+",";
+        }
         pst.close();
-        return playerGamesHistroy;
-    }
-    public static void closeDatabase() throws SQLException {
         connection.close();
+        return players;
+    }
+    public static String getInGamePlayers() throws SQLException {
+        DriverManager.registerDriver(new ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String players = "";
+        String queryString = new String("SELECT * FROM PLAYERS WHERE INGAME = true;");
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            players+=rs.getString("USERNAME")+",";
+        }
+        pst.close();
+        connection.close();
+        return players;
+    }
+
+    public static String login(String username,String password) throws SQLException {
+        DriverManager.registerDriver(new ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String queryString = new String("SELECT * FROM users WHERE username = '" + username +"' AND password = '"+password+ "';");
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        ResultSet rs = pst.executeQuery();
+        pst.close();
+        if (rs.next()) {
+            return "true";
+        }
+
+        return "false";
     }
 }
