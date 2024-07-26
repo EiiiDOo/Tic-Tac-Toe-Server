@@ -26,7 +26,21 @@ public class DataAccessObject {
 
     }
 
-    
+    public static String getPlayerData(String username) throws SQLException {
+        String player=null;
+        String queryString = new String("SELECT * FROM PLAYERS WHERE USERNAME = '" + username + "';");
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+              player=username + ",";
+            player += rs.getString("FIRSTNAEM") + ",";
+            player += rs.getString("LASTNAME") + ",";
+            player += rs.getString("MALE") + ",";
+            player += rs.getString("SCORE");
+        } 
+        pst.close();
+        return player;
+    }
     public static void closeDatabase() throws SQLException {
         connection.close();
     }
