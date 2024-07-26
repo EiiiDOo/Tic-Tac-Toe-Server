@@ -52,6 +52,17 @@ public class DataAccessObject {
         pst.close();
         return players;
     }
+     public static ArrayList<String> getHistory(String username) throws SQLException {
+        ArrayList<String> playerGamesHistroy = new ArrayList<>();
+        String queryString = new String("SELECT * FROM PLAYERS WHERE USERNAME = '" + username + "';");
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+              playerGamesHistroy.add(rs.getString("GAMEINFO"));
+        } 
+        pst.close();
+        return playerGamesHistroy;
+    }
     public static void closeDatabase() throws SQLException {
         connection.close();
     }
