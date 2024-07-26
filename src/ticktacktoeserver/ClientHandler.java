@@ -71,7 +71,12 @@ public class ClientHandler extends Thread {
        
 
     }
-   
+   public void getUserData(String username) throws SQLException{
+        queryQueue.add(getPlayerData(username));
+    }
+    public void getAvaiPlayers() throws SQLException{
+       ArrayList<String> players=getAvailablePlayers();
+    }
     
 }
 
