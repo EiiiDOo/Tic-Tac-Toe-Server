@@ -10,12 +10,13 @@ public class RequestsHandler {
 
     public void Signup(String query) {
         String[] playerInfo = query.split(",");
+        String playerStatus ="";
         try {
             DataAccessObject.insertPlayer(playerInfo);
-
         } catch (SQLException e) {
 
         }
+       ClientHandler.queryQueue.add("signupstatus,true");
 
     }
     public void Login(String query) {
