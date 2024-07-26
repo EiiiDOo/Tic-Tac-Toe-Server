@@ -78,7 +78,7 @@ public class DataAccessObject {
     public static String login(String username,String password) throws SQLException {
         DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
-        String queryString = new String("SELECT * FROM users WHERE username = '" + username +"' AND password = '"+password+ "';");
+        String queryString = new String("SELECT * FROM PLAYERS WHERE USERNAEM = '" + username +"' AND PASSWORD = '"+password+ "';");
         PreparedStatement pst = connection.prepareStatement(queryString);
         ResultSet rs = pst.executeQuery();
         pst.close();
