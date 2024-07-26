@@ -39,6 +39,24 @@ public class DataAccessObject {
     connection.close();
    // return contactList;
     }
+     public static String getContact(int id) throws SQLException {
+    String contact=""+id+",";
+    DriverManager.registerDriver(new ClientDriver());
+    Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB","root","root");
+
+    String queryString = new String("SELECT * FROM contacts WHERE id = '"+id+"';");
+    PreparedStatement pst = connection.prepareStatement(queryString) ;
+    ResultSet rs = pst.executeQuery() ;
+    
+               contact+= rs.getString("F_NAME")+",";
+                contact+= rs.getString("M_NAME")+",";
+                contact+= rs.getString("L_NAME")+",";
+                contact+= rs.getString("EMAIL")+",";
+                contact+= rs.getString("PHONE");
+    pst.close();
+    connection.close();
+    return contact;
+    }
     
     public static void insertContact() throws SQLException {
   DriverManager.registerDriver(new ClientDriver());

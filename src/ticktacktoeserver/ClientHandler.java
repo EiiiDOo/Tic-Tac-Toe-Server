@@ -5,11 +5,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static ticktacktoeserver.DataAccessObject.getContact;
 
 public class ClientHandler extends Thread {
 
@@ -66,6 +68,10 @@ public class ClientHandler extends Thread {
     void recievedQueryHandler(String query){
        
 
+    }
+    public String getUserData(int id) throws SQLException{
+        String userData=getContact(id);
+        return userData;
     }
     
 }
