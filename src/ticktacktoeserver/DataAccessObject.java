@@ -115,19 +115,19 @@ public class DataAccessObject {
         return players;
     }
 
-    public static String login(String username, String password) throws SQLException {
-         DriverManager.registerDriver(new ClientDriver());
+    public static String login(String[] playerInfo) throws SQLException {
+        DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
-      String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ? AND PASSWORD = ?";
-      PreparedStatement pst = connection.prepareStatement(queryString);
-      
-    pst.setString(1, username);
-    pst.setString(2, password);
+        String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ? AND PASSWORD = ?";
+        PreparedStatement pst = connection.prepareStatement(queryString);
+
+        pst.setString(1, playerInfo[1]);
+        pst.setString(2, playerInfo[2]);
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
             pst.close();
             connection.close();
-                return "true";
+            return "true";
         }
         pst.close();
         connection.close();

@@ -12,7 +12,7 @@ public class ClientHandler extends Thread {
 
     DataInputStream dis;
     PrintStream ps;
-    public LinkedBlockingQueue<String> queryQueue = new LinkedBlockingQueue<>();
+    public static LinkedBlockingQueue<String> queryQueue = new LinkedBlockingQueue<>();
     RequestsHandler rh;
 
     ClientHandler(Socket cs) {
@@ -36,6 +36,7 @@ public class ClientHandler extends Thread {
                     recievedQuery = dis.readLine();
                     recievedQueryHandler(recievedQuery);
                 }
+
                 // send 
                 sendQuery = queryQueue.poll(2, TimeUnit.SECONDS);
                 if (sendQuery != null) {
@@ -49,6 +50,7 @@ public class ClientHandler extends Thread {
     }
 
     void querySender(String msg) {
+        
         ps.println(msg);
 
     }
@@ -63,6 +65,13 @@ public class ClientHandler extends Thread {
                 System.out.println("Signup");
                 rh.Signup(query);
                 break;
+            case "login":
+                System.out.println("login");
+                rh.Login(query);
+                break;
+            case "getuserdata":
+                break;
+             
 
         }
 

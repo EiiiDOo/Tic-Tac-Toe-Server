@@ -22,7 +22,6 @@ public class Server {
                 while (true) {
                     Socket s;
                     try {
-                        System.out.println(DataAccessObject.login("ahmed8","1213123"));
                         s = serverSocket.accept();
                         new ClientHandler(s);
                     } catch (Exception ex) {
