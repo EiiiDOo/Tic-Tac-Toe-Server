@@ -41,6 +41,17 @@ public class DataAccessObject {
         pst.close();
         return player;
     }
+     public static ArrayList<String> getAvailablePlayers() throws SQLException {
+        ArrayList<String> players = new ArrayList<>();
+        String queryString = new String("SELECT * FROM PLAYERS WHERE AVAILABLE = true;");
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+              players.add(rs.getString("USERNAME"));
+        } 
+        pst.close();
+        return players;
+    }
     public static void closeDatabase() throws SQLException {
         connection.close();
     }
