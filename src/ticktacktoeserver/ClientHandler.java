@@ -21,8 +21,9 @@ public class ClientHandler extends Thread {
     public LinkedBlockingQueue<String> queryQueue = new LinkedBlockingQueue<>();
 
     ClientHandler(Socket cs) {
-  
+       
         try {
+            System.out.print("فقغ اشىيمثق");
             dis = new DataInputStream(cs.getInputStream());
             ps = new PrintStream(cs.getOutputStream());
         } catch (IOException ex) {
@@ -37,13 +38,13 @@ public class ClientHandler extends Thread {
             String recievedQuery = null;
             String sendQuery = null;
             try {
-                //
+                //recive
                 if (dis.available() > 0) {
               
                 recievedQuery = dis.readLine();
                 recievedQueryHandler(recievedQuery);
               
-                
+                 System.out.print(recievedQuery); 
                 }
                 // send 
                sendQuery = queryQueue.poll(2, TimeUnit.SECONDS);

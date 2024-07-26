@@ -12,14 +12,10 @@ public class TickTackToeServer extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-
+        Parent root = new FXMLDocumentBase();
         Scene scene = new Scene(root);
- 
         stage.setScene(scene);
-       Server s = new Server();
         stage.show();
-        //new Thread(()->{ }).start();
     }
 
     public static void main(String[] args) {
