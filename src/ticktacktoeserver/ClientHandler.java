@@ -31,12 +31,10 @@ public class ClientHandler extends Thread {
             String recievedQuery = null;
             String sendQuery = null;
             try {
-                //reiceve 
+                //recieve
                 if (dis.available() > 0) {
                     recievedQuery = dis.readLine();
-                      // System.out.println("Recieved a query");
                     recievedQueryHandler(recievedQuery);
-                 
                 }
                 // send 
                 sendQuery = queryQueue.poll(2, TimeUnit.SECONDS);

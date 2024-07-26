@@ -3,21 +3,36 @@ package ticktacktoeserver;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
+
     ServerSocket serverSocket;
-    
-    Server(){
-      
+
+    Server() {
         try {
             serverSocket = new ServerSocket(5005);
-            while(true){
-            Socket s = serverSocket.accept();
-            new ClientHandler(s);
-            }
         } catch (IOException ex) {
-            System.out.println("Couldn't create server");
+            System.out.println("ServerException");
         }
+        new Thread() {
+            public void run() {
+                while (true) {
+                    Socket s;
+                    try {
+                        System.out.println(DataAccessObject.login("ahmed8","1213123"));
+                        s = serverSocket.accept();
+                        new ClientHandler(s);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+            }
+        }.start();
+
     }
 
 }
