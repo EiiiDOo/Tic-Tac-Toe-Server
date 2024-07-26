@@ -70,8 +70,7 @@ public class ClientHandler extends Thread {
 
     }
     public String getUserData(int id) throws SQLException{
-        String userData=getContact(id);
-        return userData;
+        return getContact(id);
     }
     
 }
