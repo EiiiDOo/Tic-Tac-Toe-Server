@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static ticktacktoeserver.DataAccessObject.getContact;
+import static ticktacktoeserver.DataAccessObject.getAvailablePlayers;
+import static ticktacktoeserver.DataAccessObject.getPlayerData;
 
 public class ClientHandler extends Thread {
 
@@ -23,7 +25,6 @@ public class ClientHandler extends Thread {
     ClientHandler(Socket cs) {
        
         try {
-            System.out.print("فقغ اشىيمثق");
             dis = new DataInputStream(cs.getInputStream());
             ps = new PrintStream(cs.getOutputStream());
         } catch (IOException ex) {
@@ -63,16 +64,14 @@ public class ClientHandler extends Thread {
     }
 
     void querySender(String msg) {
-    
+    ps.println(msg);
       
     }
     void recievedQueryHandler(String query){
        
 
     }
-    public String getUserData(int id) throws SQLException{
-        return getContact(id);
-    }
+   
     
 }
 
