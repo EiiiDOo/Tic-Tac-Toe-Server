@@ -69,7 +69,7 @@ public class ClientHandler extends Thread {
     }
 
     void recievedQueryHandler(String query) {
-
+        System.out.println(query);
         StringTokenizer st = new StringTokenizer(query, ",");
         String q = st.nextToken();
         String playerStatus;
@@ -90,6 +90,7 @@ public class ClientHandler extends Thread {
                 ClientHandler.queryQueue.add(playerStatus);
                 clientMap.put(parse[0], this);
                 break;
+
             case "getuserdata":
                 System.out.println("getuserdata");
                 playerStatus = rh.GetUserData(query);
@@ -99,6 +100,11 @@ public class ClientHandler extends Thread {
                 System.out.println("gethistory");
                 playerStatus = rh.GetUserHistory(query);
                 ClientHandler.queryQueue.add(playerStatus);
+
+            case "getavailableplayers":
+                parse = query.split(",");
+                String availabplePlayers=rh.availablePlayers(parse[1]);
+                ClientHandler.queryQueue.add(availabplePlayers);
                 break;
 
         }

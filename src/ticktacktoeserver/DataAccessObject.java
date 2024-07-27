@@ -87,6 +87,7 @@ public class DataAccessObject {
         while (rs.next()) {
             players += rs.getString("USERNAME") + ",";
         }
+        System.out.println("pla :"+players);
         pst.close();
         connection.close();
         return players;
@@ -162,5 +163,6 @@ public class DataAccessObject {
         pst.close();
         return playerData;
     }
+
 
 }

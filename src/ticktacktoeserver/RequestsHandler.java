@@ -1,6 +1,8 @@
 package ticktacktoeserver;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RequestsHandler {
 
@@ -31,6 +33,17 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+
+    public String availablePlayers(String username){
+        String availablePlayer =username+",getavailableplayers," ;
+        try {
+            availablePlayer +=   DataAccessObject.getAvailablePlayers();
+        } catch (SQLException ex) {
+            System.out.println("get all available players sql exception");;
+        }
+        return availablePlayer;
+    }
+
 
     public String GetUserData(String query) {
         String[] playerInfo = query.split(",");
