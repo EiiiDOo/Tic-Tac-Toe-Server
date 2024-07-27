@@ -53,7 +53,7 @@ public class ClientHandler extends Thread {
     }
 
     void querySender(String responseToClient) {
-
+       
         String[] parsedResponse = responseToClient.split(",");
         if (parsedResponse[1].equalsIgnoreCase("loginstatus") || parsedResponse[1].equalsIgnoreCase("signupstatus")) {
             if (Boolean.parseBoolean(parsedResponse[2])) {
@@ -64,6 +64,7 @@ public class ClientHandler extends Thread {
                 clientMap.remove(parsedResponse[0]);
             }
         }
+        System.out.println(parsedResponse[0]);    
         clientMap.get(parsedResponse[0]).ps.println(responseToClient);
 
     }
@@ -109,7 +110,7 @@ public class ClientHandler extends Thread {
                 break;
             case "playinvite":
                  System.out.println("playinvite");
-                 String sendInviteTo=rh.availablePlayers(query);
+                 String sendInviteTo=rh.sendGameInvite(query);
                  ClientHandler.queryQueue.add(sendInviteTo);
                 break;
 
