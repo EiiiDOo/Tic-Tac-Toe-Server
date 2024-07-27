@@ -70,4 +70,22 @@ public class RequestsHandler {
         String inviteString = data[2]+",playinvite,"+data[1];
         return inviteString;
     }
+    public String setTwoPlayersInGame(String query){
+            String [] data =  query.split(",");
+            String startUser1 = data[2]+",startmatch,"+data[1];
+            String startUser2 = data[1]+",startmatch,"+data[2];
+            String startMatchQuery = startUser1 ;
+            startMatchQuery +="~";
+            startMatchQuery +=startUser2;
+          try {
+              DataAccessObject.setTwoPlayersInGame(data);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+    
+       return startMatchQuery;
+  
+    }
+    
+    
 }

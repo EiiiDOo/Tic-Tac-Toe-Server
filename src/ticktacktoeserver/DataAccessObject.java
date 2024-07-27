@@ -21,7 +21,6 @@ public class DataAccessObject {
         pst.setString(2, playerInfo[2]); // FIRSTNAME
         pst.setString(3, playerInfo[3]); // LASTNAME
         pst.setString(4, playerInfo[4]); //PASSWORD
-        System.out.println(playerInfo[5]);
         pst.setBoolean(5, (playerInfo[5].equalsIgnoreCase("true")? true : false)); //male
         pst.setInt(6, 0);// isMale 
         Blob imageBlob = connection.createBlob();
@@ -87,7 +86,6 @@ public class DataAccessObject {
         while (rs.next()) {
             players += rs.getString("USERNAME") + ",";
         }
-        System.out.println("pla :"+players);
         pst.close();
         connection.close();
         return players;
@@ -163,6 +161,25 @@ public class DataAccessObject {
         pst.close();
         return playerData;
     }
+    
+    public static String setTwoPlayersInGame(String[] twoPlayers) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
+        String updateQuery = "UPDATE GAMEHISTORY SET AVAILABLE = FALSE, INGAME = TRUE WHERE USERNAME = ? OR USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, twoPlayers[1]);
+        pst.setString(2, twoPlayers[2]);
+
+        int rowsUpdated = pst.executeUpdate();
+        if (rowsUpdated>0){
+             pst.close();
+        connection.close();
+        return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false"; 
+    }
 
 }

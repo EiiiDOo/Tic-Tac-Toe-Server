@@ -56,21 +56,18 @@ public class ClientHandler extends Thread {
        
         String[] parsedResponse = responseToClient.split(",");
         if (parsedResponse[1].equalsIgnoreCase("loginstatus") || parsedResponse[1].equalsIgnoreCase("signupstatus")) {
-            if (Boolean.parseBoolean(parsedResponse[2])) {
+            if (Boolean.parseBoolean(parsedResponse[2])) {        
                 clientMap.get(parsedResponse[0]).ps.println(responseToClient);
             } else {
-
                 clientMap.get(parsedResponse[0]).ps.println(responseToClient);
                 clientMap.remove(parsedResponse[0]);
             }
-        }
-        System.out.println(parsedResponse[0]);    
+        } 
         clientMap.get(parsedResponse[0]).ps.println(responseToClient);
 
     }
 
     void recievedQueryHandler(String query) {
-        System.out.println(query);
         StringTokenizer st = new StringTokenizer(query, ",");
         String q = st.nextToken();
         String playerStatus;
@@ -112,6 +109,21 @@ public class ClientHandler extends Thread {
                  System.out.println("playinvite");
                  String sendInviteTo=rh.sendGameInvite(query);
                  ClientHandler.queryQueue.add(sendInviteTo);
+                break;
+            case "acceptinvite":
+                 System.out.println("acceptinvite");
+                 System.out.println(query);
+                 String acceptMessage=rh.setTwoPlayersInGame(query);
+                 System.out.println("~~"+acceptMessage+"~~");
+                 String [] acceptMessages = acceptMessage.split("~");
+                 ClientHandler.queryQueue.add(acceptMessages[0]);
+                 ClientHandler.queryQueue.add(acceptMessages[1]);
+                break;
+            case "rejectinvite":
+                 System.out.println("rejectinvite");
+                              System.out.println(query);
+                // String sendInviteTo=rh.sendGameInvite(query);
+               //  ClientHandler.queryQueue.add(sendInviteTo);
                 break;
 
         }
