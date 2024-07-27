@@ -65,4 +65,9 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+    public String sendGameInvite(String query){
+        String [] data =  query.split(",");
+        String inviteString = data[2]+",playinvite,"+data[1];
+        return inviteString;
+    }
 }

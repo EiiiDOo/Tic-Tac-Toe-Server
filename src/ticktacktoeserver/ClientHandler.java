@@ -102,9 +102,15 @@ public class ClientHandler extends Thread {
                 ClientHandler.queryQueue.add(playerStatus);
 
             case "getavailableplayers":
+                 System.out.println("getavailableplayers");
                 parse = query.split(",");
                 String availabplePlayers=rh.availablePlayers(parse[1]);
                 ClientHandler.queryQueue.add(availabplePlayers);
+                break;
+            case "playinvite":
+                 System.out.println("playinvite");
+                 String sendInviteTo=rh.availablePlayers(query);
+                 ClientHandler.queryQueue.add(sendInviteTo);
                 break;
 
         }
