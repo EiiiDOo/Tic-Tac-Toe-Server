@@ -42,4 +42,14 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+    public String GetUserHistory(String query) {
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.getPlayerHistory(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return playerStatus;
+    }
 }

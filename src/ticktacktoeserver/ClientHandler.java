@@ -95,6 +95,11 @@ public class ClientHandler extends Thread {
                 playerStatus = rh.GetUserData(query);
                 ClientHandler.queryQueue.add(playerStatus);
                 break;
+            case "gethistory":
+                System.out.println("gethistory");
+                playerStatus = rh.GetUserHistory(query);
+                ClientHandler.queryQueue.add(playerStatus);
+                break;
 
         }
 

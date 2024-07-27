@@ -140,5 +140,27 @@ public class DataAccessObject {
         connection.close();
         return playerInfo[1]+",loginstatus,false";
     }
+    
+    public static String getPlayerHistory(String[] playerInfo) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+
+        String queryString = "SELECT * FROM GAMEHISTORY WHERE USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        pst.setString(1, playerInfo[1]);
+
+        ResultSet rs = pst.executeQuery();
+
+        String playerData = "";
+        playerData = playerInfo[1] + ",";
+        playerData += "getuserhistory,";
+    while (rs.next()) {
+      
+            playerData += rs.getString("GAMEID") + ",";
+            playerData += rs.getString("GAMEINFO~~");
+        }
+        pst.close();
+        return playerData;
+    }
 
 }
