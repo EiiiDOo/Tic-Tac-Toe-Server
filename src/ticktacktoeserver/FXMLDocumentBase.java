@@ -10,7 +10,7 @@ public class FXMLDocumentBase extends AnchorPane {
 
     protected final Button button;
     protected final Label label;
-    Server server;
+
     public FXMLDocumentBase() {
 
         button = new Button();
@@ -31,8 +31,7 @@ public class FXMLDocumentBase extends AnchorPane {
 
         getChildren().add(button);
         getChildren().add(label);
-        server =new Server();
-        System.out.println("Hello server");
+ 
     }
 
 

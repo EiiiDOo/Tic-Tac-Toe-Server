@@ -13,6 +13,7 @@ public class TickTackToeServer extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = new FXMLDocumentBase();
+        Server server = new Server();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
