@@ -29,11 +29,17 @@ public class DataAccessObject {
         pst.setBoolean(8, true);
         pst.setBoolean(9, false);
         pst.setBoolean(10, false);
-        int rs = pst.executeUpdate();
-        pst.close();
-        connection.close();
+        try {
+            int rs = pst.executeUpdate();
+            pst.close();
+            connection.close();
+            return playerInfo[1] + ",signupstatus,true";
+        } catch (SQLException sq) {
+            pst.close();
+            connection.close();
+            return playerInfo[1] + ",signupstatus,false";
+        }
 
-        return Integer.toString(rs);
     }
 
     public static String getPlayerData(String username) throws SQLException {
@@ -127,11 +133,11 @@ public class DataAccessObject {
         if (rs.next()) {
             pst.close();
             connection.close();
-            return "true";
+            return playerInfo[1]+",loginstatus,true";
         }
         pst.close();
         connection.close();
-        return "false";
+        return playerInfo[1]+",loginstatus,false";
     }
 
 }

@@ -8,18 +8,19 @@ public class RequestsHandler {
 
     }
 
-    public void Signup(String query) {
+    public String Signup(String query) {
         String[] playerInfo = query.split(",");
         String playerStatus ="";
         try {
-            DataAccessObject.insertPlayer(playerInfo);
+            playerStatus = DataAccessObject.insertPlayer(playerInfo);
+       
         } catch (SQLException e) {
 
         }
-       ClientHandler.queryQueue.add("signupstatus,true");
+       return playerStatus;
 
     }
-    public void Login(String query) {
+    public String Login(String query) {
         String[] playerInfo = query.split(",");
         String playerStatus ="" ;
         try {
@@ -27,9 +28,7 @@ public class RequestsHandler {
         } catch (SQLException e) {
             System.out.println("SQL exception");
         }
-
-        ClientHandler.queryQueue.add("loginstatus,"+playerStatus);
-
+        return playerStatus;
     }
     public  void  SendDataToClient() throws SQLException {
 
