@@ -113,7 +113,7 @@ public class ClientHandler extends Thread {
             case "acceptinvite":
                  System.out.println("acceptinvite");
                  System.out.println(query);
-                 String acceptMessage=rh.setTwoPlayersInGame(query);
+                 String acceptMessage=rh.setTwoPlayersToStartAGame(query);
                  System.out.println("~~"+acceptMessage+"~~");
                  String [] acceptMessages = acceptMessage.split("~");
                  ClientHandler.queryQueue.add(acceptMessages[0]);
@@ -121,9 +121,9 @@ public class ClientHandler extends Thread {
                 break;
             case "rejectinvite":
                  System.out.println("rejectinvite");
-                              System.out.println(query);
-                // String sendInviteTo=rh.sendGameInvite(query);
-               //  ClientHandler.queryQueue.add(sendInviteTo);
+                 System.out.println(query);
+                 String[] parseReject = query.split(",");
+                 ClientHandler.queryQueue.add(parseReject[2]+",rejectinvite,"+parseReject[1]);
                 break;
 
         }
