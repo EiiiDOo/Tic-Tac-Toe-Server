@@ -21,7 +21,8 @@ public class DataAccessObject {
         pst.setString(2, playerInfo[2]); // FIRSTNAME
         pst.setString(3, playerInfo[3]); // LASTNAME
         pst.setString(4, playerInfo[4]); //PASSWORD
-        pst.setBoolean(5, (playerInfo[5].toUpperCase() == "TRUE" ? true : false)); //male
+        System.out.println(playerInfo[5]);
+        pst.setBoolean(5, (playerInfo[5].equalsIgnoreCase("true")? true : false)); //male
         pst.setInt(6, 0);// isMale 
         Blob imageBlob = connection.createBlob();
         imageBlob.setBytes(1, Base64.getDecoder().decode(playerInfo[7]));
@@ -42,20 +43,20 @@ public class DataAccessObject {
 
     }
 
-    public static String getPlayerData(String username) throws SQLException {
+    public static String getPlayerData(String[] playerInfo) throws SQLException {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
         String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ?";
         PreparedStatement pst = connection.prepareStatement(queryString);
-        pst.setString(1, username);
+        pst.setString(1, playerInfo[1]);
 
         ResultSet rs = pst.executeQuery();
 
         String playerData = "";
         if (rs.next()) {
-            playerData = username + ",";
-
+            playerData = playerInfo[1] + ",";
+            playerData += "getuserdata,";
             playerData += rs.getString("FIRSTNAME") + ",";
 
             playerData += rs.getString("LASTNAME") + ",";

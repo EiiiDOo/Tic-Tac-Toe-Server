@@ -42,11 +42,10 @@ public class ClientHandler extends Thread {
                 }
 
                 // send 
-                sendQuery = queryQueue.poll(2, TimeUnit.SECONDS);
+                sendQuery = queryQueue.poll(1, TimeUnit.SECONDS);
                 if (sendQuery != null) {
                     querySender(sendQuery);
                 }
-                TimeUnit.SECONDS.sleep(2);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -92,6 +91,9 @@ public class ClientHandler extends Thread {
                 clientMap.put(parse[0], this);
                 break;
             case "getuserdata":
+                System.out.println("getuserdata");
+                playerStatus = rh.GetUserData(query);
+                ClientHandler.queryQueue.add(playerStatus);
                 break;
 
         }
