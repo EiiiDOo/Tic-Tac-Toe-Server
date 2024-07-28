@@ -42,7 +42,7 @@ public class ClientHandler extends Thread {
                 }
 
                 // send 
-                sendQuery = queryQueue.poll(1, TimeUnit.SECONDS);
+                sendQuery = queryQueue.poll(500, TimeUnit.MILLISECONDS);
                 if (sendQuery != null) {
                     querySender(sendQuery);
                 }
@@ -125,6 +125,13 @@ public class ClientHandler extends Thread {
                  String[] parseReject = query.split(",");
                  ClientHandler.queryQueue.add(parseReject[2]+",rejectinvite,"+parseReject[1]);
                 break;
+            case "playedmove":
+                 System.out.println("playedmove");
+                 System.out.println(query);
+                 String[] parseMove = query.split(",");
+                ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+    
 
         }
 
