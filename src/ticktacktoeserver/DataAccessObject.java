@@ -171,29 +171,30 @@ public class DataAccessObject {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
-        String queryString = "SELECT * FROM GAMEHISTORY WHERE USERNAME = ?";
+             String queryString = "SELECT * FROM GAMEHISTORY WHERE USERNAME1 = ?";
         PreparedStatement pst = connection.prepareStatement(queryString);
         pst.setString(1, playerInfo[1]);
+        
 
         ResultSet rs = pst.executeQuery();
-
+        
         String playerData = "";
-        playerData = playerInfo[1] + ",";
+        playerData += playerInfo[1] + ",";
         playerData += "getuserhistory,";
-    while (rs.next()) {
-      
-            playerData += rs.getString("GAMEID") + ",";
-            playerData += rs.getString("GAMEINFO~~");
+         while (rs.next()) {
+            playerData += rs.getString("USERNAME2");
+            playerData +="_";
+            playerData += rs.getString("GAMEINFO");
+            playerData +=",";
         }
         pst.close();
         return playerData;
     }
-    
     public static String setTwoPlayersInGame(String[] twoPlayers) throws SQLException {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
-        String updateQuery = "UPDATE GAMEHISTORY SET AVAILABLE = FALSE, INGAME = TRUE WHERE USERNAME = ? OR USERNAME = ?";
+        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = FALSE, INGAME = TRUE WHERE USERNAME = ? OR USERNAME = ?";
         PreparedStatement pst = connection.prepareStatement(updateQuery);
         pst.setString(1, twoPlayers[1]);
         pst.setString(2, twoPlayers[2]);
@@ -208,5 +209,66 @@ public class DataAccessObject {
         connection.close();
         return "false"; 
     }
+    public static String setTwoPlayersAvailable(String[] twoPlayers) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
+        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = TRUE, INGAME = FALSE WHERE USERNAME = ? OR USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, twoPlayers[1]);
+        pst.setString(2, twoPlayers[2]);
+
+        int rowsUpdated = pst.executeUpdate();
+        if (rowsUpdated>0){
+             pst.close();
+        connection.close();
+        return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false"; 
+    }
+    public static String incrementScore(String [] playInfo) throws SQLException{
+   
+           DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+
+        String updateQuery = "UPDATE PLAYERS SET SCORE = SCORE + 1 WHERE USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, playInfo[1]);
+        int rowsUpdated = pst.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            pst.close();
+            connection.close();
+            return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false";
+   
+   }
+
+    public static String saveMatch(String[] playerInfo) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        String queryString = "INSERT INTO GAMEHISTORY (USERNAME1, USERNAME2, GAMEINFO) VALUES (?, ?, ?)";
+//     // save,u1,u2,nplays~winning~date~winningline
+        setTwoPlayersAvailable(playerInfo);
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        pst.setString(1, playerInfo[1]); // USERNAME
+        pst.setString(2, playerInfo[2]); // FIRSTNAME
+        pst.setString(3, playerInfo[3]); // LASTNAME
+        int rowsUpdated = pst.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            pst.close();
+            connection.close();
+            return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false";
+
+    }
 }

@@ -58,11 +58,13 @@ public class RequestsHandler {
     }
     public String GetUserHistory(String query) {
         String[] playerInfo = query.split(",");
+        System.out.println(query);
         String playerStatus = "";
         try {
             playerStatus = DataAccessObject.getPlayerHistory(playerInfo);
+             System.out.println(playerStatus);
         } catch (SQLException e) {
-            System.out.println("SQL exception");
+            e.printStackTrace();
         }
         return playerStatus;
     }
@@ -94,6 +96,25 @@ public class RequestsHandler {
        return startMatchQuery;
   
     }
-    
+    public String incrementScore(String query){
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.incrementScore(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return playerStatus;
+    }
+    public String saveMatch(String query){
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.saveMatch(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return playerStatus;
+    }
     
 }
