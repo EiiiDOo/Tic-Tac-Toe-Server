@@ -96,6 +96,7 @@ public class ClientHandler extends Thread {
                 break;
             case "gethistory":
                 System.out.println("gethistory");
+                
                 playerStatus = rh.GetUserHistory(query);
                 ClientHandler.queryQueue.add(playerStatus);
 
@@ -130,6 +131,33 @@ public class ClientHandler extends Thread {
                  System.out.println(query);
                  String[] parseMove = query.split(",");
                 ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "win":
+                 System.out.println("win");
+                 System.out.println(query);
+                 String didWin = rh.incrementScore(query);
+                 String[] parseWin = query.split(",");
+                ClientHandler.queryQueue.add(parseWin[2]+",win,"+parseWin[1]+","+parseWin[3]+","+parseWin[4]);
+                break;
+            case "lose":
+                
+                 System.out.println("lose");
+                 System.out.println(query);
+              //   String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "draw":
+                 System.out.println("draw");
+                 System.out.println(query);
+             //    String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "save":
+                 System.out.println("save");
+                 System.out.println(query);
+                 String didIsave = rh.saveMatch(query);
+             //    String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
                 break;
     
 
