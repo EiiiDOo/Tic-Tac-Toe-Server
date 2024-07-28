@@ -75,7 +75,34 @@ public class DataAccessObject {
         pst.close();
         return playerData;
     }
+    public static String getPlayerDataForMatchInit(String username) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
+        String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        pst.setString(1,username);
+
+        ResultSet rs = pst.executeQuery();
+
+        String playerData = "";
+        if (rs.next()) {
+            playerData = username + ",";
+            playerData += rs.getString("FIRSTNAME") + ",";
+            playerData += rs.getString("LASTNAME") + ",";
+            playerData += rs.getString("SCORE") + ",";
+            Blob pictureBlob = rs.getBlob("PICTURE");
+            if (pictureBlob != null) {
+                byte[] bytes = pictureBlob.getBytes(1, (int) pictureBlob.length());
+                String base64Image = Base64.getEncoder().encodeToString(bytes);
+                playerData += base64Image;
+            } else {
+                playerData += null;
+            }
+        }
+        pst.close();
+        return playerData;
+    }
     public static String getAvailablePlayers() throws SQLException {
         DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
