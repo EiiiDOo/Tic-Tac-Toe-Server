@@ -83,8 +83,10 @@ public class RequestsHandler {
             String player2Data = DataAccessObject.getPlayerDataForMatchInit(data[2]);
             String player1Coin =Integer.toString( randomInt) ;
             String player2Coin = Integer.toString(randomInt==0? 1:0); 
+
             String startUser1 = data[2]+",startmatch,"+player2Coin+","+player1Coin+","+player1Data+","+player2Data;
             String startUser2 = data[1]+",startmatch,"+player1Coin+","+player2Coin+","+player2Data+","+player1Data;
+
             startMatchQuery = startUser1 ;
             startMatchQuery +="~";
             startMatchQuery +=startUser2;

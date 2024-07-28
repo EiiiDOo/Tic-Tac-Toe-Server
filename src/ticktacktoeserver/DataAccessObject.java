@@ -143,7 +143,7 @@ public class DataAccessObject {
         pst.close();
         connection.close();
         return players;
-    }
+    } 
     public static String login(String[] playerInfo) throws SQLException {
         DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
@@ -243,11 +243,12 @@ public class DataAccessObject {
         return "false";
    
    }
+
     public static String saveMatch(String[] playerInfo) throws SQLException {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
         String queryString = "INSERT INTO GAMEHISTORY (USERNAME1, USERNAME2, GAMEINFO) VALUES (?, ?, ?)";
-//     // save,u1,u2,nplays~winning~date~winningline
+  // save,u1,u2,nplays~winning~date~winningline
         setTwoPlayersAvailable(playerInfo);
         PreparedStatement pst = connection.prepareStatement(queryString);
         pst.setString(1, playerInfo[1]); // USERNAME
