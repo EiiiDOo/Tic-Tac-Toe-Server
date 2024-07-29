@@ -160,6 +160,24 @@ public class ClientHandler extends Thread {
              //    String[] parseMove = query.split(",");
              //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
                 break;
+            case "surrender":
+                // sur , user1,user2
+                 System.out.println("surrender");
+                 System.out.println(query);
+                 String didSur = rh.surrMatch(query);
+                 String []stringA = didSur.split(",");
+                 ClientHandler.queryQueue.add(stringA[2]+",surrender,"+stringA[1]);
+
+             //    String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "setav":
+                // sur , user1,user2
+                 System.out.println("setav");
+                 System.out.println(query);
+                 String did = rh.setTwoPlayersAvailable(query);
+
+                break;
     
 
         }

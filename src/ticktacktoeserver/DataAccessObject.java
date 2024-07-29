@@ -248,7 +248,7 @@ public class DataAccessObject {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
         String queryString = "INSERT INTO GAMEHISTORY (USERNAME1, USERNAME2, GAMEINFO) VALUES (?, ?, ?)";
-  // save,u1,u2,nplays~winning~date~winningline
+    // save,u1,u2,0~nplays~winning~date~winningline
         setTwoPlayersAvailable(playerInfo);
         PreparedStatement pst = connection.prepareStatement(queryString);
         pst.setString(1, playerInfo[1]); // USERNAME
@@ -266,4 +266,28 @@ public class DataAccessObject {
         return "false";
 
     }
+    
+    public static String surrMatch(String[] playerInfo) throws SQLException {
+          // sur 
+          // user1 surrundered 
+          // user2 
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+
+        String updateQuery = "UPDATE PLAYERS SET SCORE = SCORE + 1 WHERE USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, playerInfo[2]);
+        int rowsUpdated = pst.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            pst.close();
+            connection.close();
+            return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false";
+
+    }
+    
 }

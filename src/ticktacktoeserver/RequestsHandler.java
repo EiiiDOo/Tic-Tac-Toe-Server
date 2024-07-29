@@ -118,5 +118,28 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+    public String surrMatch(String query){
     
+       String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.surrMatch(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return query;
+    }
+        public String setTwoPlayersAvailable(String query){
+  
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.setTwoPlayersAvailable(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return query;
+ 
+  
+    }
 }
