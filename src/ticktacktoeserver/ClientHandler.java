@@ -42,7 +42,7 @@ public class ClientHandler extends Thread {
                 }
 
                 // send 
-                sendQuery = queryQueue.poll(1, TimeUnit.SECONDS);
+                sendQuery = queryQueue.poll(500, TimeUnit.MILLISECONDS);
                 if (sendQuery != null) {
                     querySender(sendQuery);
                 }
@@ -56,21 +56,18 @@ public class ClientHandler extends Thread {
        
         String[] parsedResponse = responseToClient.split(",");
         if (parsedResponse[1].equalsIgnoreCase("loginstatus") || parsedResponse[1].equalsIgnoreCase("signupstatus")) {
-            if (Boolean.parseBoolean(parsedResponse[2])) {
+            if (Boolean.parseBoolean(parsedResponse[2])) {        
                 clientMap.get(parsedResponse[0]).ps.println(responseToClient);
             } else {
-
                 clientMap.get(parsedResponse[0]).ps.println(responseToClient);
                 clientMap.remove(parsedResponse[0]);
             }
-        }
-        System.out.println(parsedResponse[0]);    
+        } 
         clientMap.get(parsedResponse[0]).ps.println(responseToClient);
 
     }
 
     void recievedQueryHandler(String query) {
-        System.out.println(query);
         StringTokenizer st = new StringTokenizer(query, ",");
         String q = st.nextToken();
         String playerStatus;
@@ -99,6 +96,7 @@ public class ClientHandler extends Thread {
                 break;
             case "gethistory":
                 System.out.println("gethistory");
+                
                 playerStatus = rh.GetUserHistory(query);
                 ClientHandler.queryQueue.add(playerStatus);
 
@@ -113,6 +111,56 @@ public class ClientHandler extends Thread {
                  String sendInviteTo=rh.sendGameInvite(query);
                  ClientHandler.queryQueue.add(sendInviteTo);
                 break;
+            case "acceptinvite":
+                 System.out.println("acceptinvite");
+                 System.out.println(query);
+                 String acceptMessage=rh.setTwoPlayersToStartAGame(query);
+                 System.out.println("~~"+acceptMessage+"~~");
+                 String [] acceptMessages = acceptMessage.split("~");
+                 ClientHandler.queryQueue.add(acceptMessages[0]);
+                 ClientHandler.queryQueue.add(acceptMessages[1]);
+                break;
+            case "rejectinvite":
+                 System.out.println("rejectinvite");
+                 System.out.println(query);
+                 String[] parseReject = query.split(",");
+                 ClientHandler.queryQueue.add(parseReject[2]+",rejectinvite,"+parseReject[1]);
+                break;
+            case "playedmove":
+                 System.out.println("playedmove");
+                 System.out.println(query);
+                 String[] parseMove = query.split(",");
+                ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "win":
+                 System.out.println("win");
+                 System.out.println(query);
+                 String didWin = rh.incrementScore(query);
+                 String[] parseWin = query.split(",");
+                ClientHandler.queryQueue.add(parseWin[2]+",win,"+parseWin[1]+","+parseWin[3]+","+parseWin[4]);
+                break;
+            case "lose":
+
+                 System.out.println("lose");
+                 System.out.println(query);
+              //   String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "draw":
+                 System.out.println("draw");
+                 System.out.println(query);
+             //    String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+            case "save":
+                 System.out.println("save");
+                 System.out.println(query);
+                 String didIsave = rh.saveMatch(query);
+
+             //    String[] parseMove = query.split(",");
+             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
+                break;
+    
 
         }
 
