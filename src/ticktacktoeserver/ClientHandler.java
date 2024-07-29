@@ -55,6 +55,7 @@ public class ClientHandler extends Thread {
     void querySender(String responseToClient) {
        
         String[] parsedResponse = responseToClient.split(",");
+       
         if (parsedResponse[1].equalsIgnoreCase("loginstatus") || parsedResponse[1].equalsIgnoreCase("signupstatus")) {
             if (Boolean.parseBoolean(parsedResponse[2])) {        
                 clientMap.get(parsedResponse[0]).ps.println(responseToClient);
@@ -114,12 +115,17 @@ public class ClientHandler extends Thread {
             case "acceptinvite":
                  System.out.println("acceptinvite");
                  System.out.println(query);
-                 String acceptMessage=rh.setTwoPlayersToStartAGame(query);
+                 boolean isLoggedOffOrInGame =rh.isLoggedOfOrInGame(query);
+              
+                  String acceptMessage=rh.setTwoPlayersToStartAGame(query);
                  System.out.println("~~"+acceptMessage+"~~");
                  String [] acceptMessages = acceptMessage.split("~");
                  ClientHandler.queryQueue.add(acceptMessages[0]);
                  ClientHandler.queryQueue.add(acceptMessages[1]);
                 break;
+                 
+                
+                
             case "rejectinvite":
                  System.out.println("rejectinvite");
                  System.out.println(query);
@@ -154,28 +160,41 @@ public class ClientHandler extends Thread {
                 break;
             case "save":
                  System.out.println("save");
-                 System.out.println(query);
+ 
                  String didIsave = rh.saveMatch(query);
 
-             //    String[] parseMove = query.split(",");
-             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
                 break;
             case "surrender":
-                // sur , user1,user2
+             
                  System.out.println("surrender");
-                 System.out.println(query);
+
                  String didSur = rh.surrMatch(query);
                  String []stringA = didSur.split(",");
                  ClientHandler.queryQueue.add(stringA[2]+",surrender,"+stringA[1]);
 
-             //    String[] parseMove = query.split(",");
-             //   ClientHandler.queryQueue.add(parseMove[2]+",playedmove,"+parseMove[1]+","+parseMove[3]+","+parseMove[4]);
                 break;
             case "setav":
-                // sur , user1,user2
+     
                  System.out.println("setav");
-                 System.out.println(query);
+     
                  String did = rh.setTwoPlayersAvailable(query);
+
+                break;
+            case "setloggedoff":
+                 System.out.println("setloggedoff");
+                 String logeed = rh.setTwoPlayersLoggedOff(query);
+
+                break;
+            case "setloggedin":
+                 System.out.println("setloggedon");
+                 String loggedin = rh.setPlayerAvailable(query);
+
+                break;
+            case "leftgame":
+              System.out.println("leftgame");
+                 String didSur1 = rh.surrMatch(query);
+                 String []stringA1 = didSur1.split(",");
+                 ClientHandler.queryQueue.add(stringA1[2]+",leftgame,"+stringA1[1]);
 
                 break;
 

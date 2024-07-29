@@ -68,6 +68,18 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+        public boolean isLoggedOfOrInGame(String query) {
+        String[] playerInfo = query.split(",");
+       
+        boolean ilori = false; 
+        try {
+            ilori = DataAccessObject.isLoggedOfOrInGame(playerInfo[1]);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
     public String sendGameInvite(String query){
         String [] data =  query.split(",");
         String inviteString = data[2]+",playinvite,"+data[1];
@@ -136,6 +148,32 @@ public class RequestsHandler {
         String playerStatus = "";
         try {
             playerStatus = DataAccessObject.setTwoPlayersAvailable(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return query;
+ 
+  
+    }
+               public String setTwoPlayersLoggedOff(String query){
+  
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.setTwoPlayersLoggedOff(playerInfo);
+        } catch (SQLException e) {
+            System.out.println("SQL exception");
+        }
+        return query;
+ 
+  
+    }
+               public String setPlayerAvailable(String query){
+  
+        String[] playerInfo = query.split(",");
+        String playerStatus = "";
+        try {
+            playerStatus = DataAccessObject.setPlayerAvailable(playerInfo);
         } catch (SQLException e) {
             System.out.println("SQL exception");
         }

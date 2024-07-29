@@ -106,7 +106,7 @@ public class DataAccessObject {
         DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
         String players = "";
-        String queryString = "SELECT * FROM PLAYERS WHERE AVAILABLE = true";
+        String queryString = "SELECT * FROM PLAYERS WHERE AVAILABLE = true AND LOGGEDOFF = false ";
         PreparedStatement pst = connection.prepareStatement(queryString);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
@@ -147,11 +147,12 @@ public class DataAccessObject {
     public static String login(String[] playerInfo) throws SQLException {
         DriverManager.registerDriver(new ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
-        String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ? AND PASSWORD = ?";
+        String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ? AND  PASSWORD = ?  AND LOGGEDOFF = TRUE";
         PreparedStatement pst = connection.prepareStatement(queryString);
 
         pst.setString(1, playerInfo[1]);
         pst.setString(2, playerInfo[2]);
+        
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
             pst.close();
@@ -161,6 +162,23 @@ public class DataAccessObject {
         pst.close();
         connection.close();
         return playerInfo[1]+",loginstatus,false";
+    }
+       public static boolean isLoggedOfOrInGame (String username) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+
+        String queryString = "SELECT * FROM PLAYERS WHERE USERNAME = ? , LOGGEDOFF = FALSE AND INGAME=FALSE ";
+        PreparedStatement pst = connection.prepareStatement(queryString);
+        pst.setString(1,username);
+
+        ResultSet rs = pst.executeQuery();
+
+        String playerData = "";
+        if (rs.next()) {
+           return true;
+        }
+        pst.close();
+        return false;
     }
     public static String getPlayerHistory(String[] playerInfo) throws SQLException {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -208,11 +226,50 @@ public class DataAccessObject {
         DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
 
-        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = TRUE, INGAME = FALSE WHERE USERNAME = ? OR USERNAME = ?";
+        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = true, INGAME = false , LOGGEDOFF = false WHERE USERNAME = ? OR USERNAME = ?";
         PreparedStatement pst = connection.prepareStatement(updateQuery);
         pst.setString(1, twoPlayers[1]);
         pst.setString(2, twoPlayers[2]);
 
+        int rowsUpdated = pst.executeUpdate();
+        if (rowsUpdated>0){
+             pst.close();
+        connection.close();
+        return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false"; 
+    }
+    public static String setPlayerAvailable(String[] twoPlayers) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+
+        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = true, INGAME = false , LOGGEDOFF = false WHERE USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, twoPlayers[1]);
+      
+
+        int rowsUpdated = pst.executeUpdate();
+        if (rowsUpdated>0){
+             pst.close();
+        connection.close();
+        return "true";
+        }
+        pst.close();
+        connection.close();
+        return "false"; 
+    }
+    
+    public static String setTwoPlayersLoggedOff(String[] twoPlayers) throws SQLException {
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
+        System.out.println("laosdoaosd");
+        String updateQuery = "UPDATE PLAYERS SET AVAILABLE = false, INGAME = false , LOGGEDOFF = true WHERE USERNAME = ? OR USERNAME = ?";
+        PreparedStatement pst = connection.prepareStatement(updateQuery);
+        pst.setString(1, twoPlayers[1]);
+        pst.setString(2, twoPlayers[2]);
+        
         int rowsUpdated = pst.executeUpdate();
         if (rowsUpdated>0){
              pst.close();
