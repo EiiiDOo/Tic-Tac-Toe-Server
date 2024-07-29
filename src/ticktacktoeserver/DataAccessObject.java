@@ -249,6 +249,7 @@ public class DataAccessObject {
         Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/TTTDB", "root", "root");
         String queryString = "INSERT INTO GAMEHISTORY (USERNAME1, USERNAME2, GAMEINFO) VALUES (?, ?, ?)";
     // save,u1,u2,0~nplays~winning~date~winningline
+
         setTwoPlayersAvailable(playerInfo);
         PreparedStatement pst = connection.prepareStatement(queryString);
         pst.setString(1, playerInfo[1]); // USERNAME
@@ -290,4 +291,5 @@ public class DataAccessObject {
 
     }
     
+
 }

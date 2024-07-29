@@ -118,6 +118,7 @@ public class RequestsHandler {
         }
         return playerStatus;
     }
+
     public String surrMatch(String query){
     
        String[] playerInfo = query.split(",");
@@ -142,4 +143,5 @@ public class RequestsHandler {
  
   
     }
+
 }

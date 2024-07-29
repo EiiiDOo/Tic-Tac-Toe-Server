@@ -178,6 +178,7 @@ public class ClientHandler extends Thread {
                  String did = rh.setTwoPlayersAvailable(query);
 
                 break;
+
     
 
         }
